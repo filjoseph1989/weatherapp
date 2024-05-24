@@ -18,7 +18,9 @@ const Weather = ({ lat, lon }) => {
             }
         };
 
-        fetchWeatherData();
+        if (lat && lon) {
+            fetchWeatherData();
+        }
     }, [lat, lon]);
 
     if (loading) return <div>Loading...</div>;
