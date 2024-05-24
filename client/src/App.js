@@ -50,9 +50,8 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Weather App</h1>
-      <form onSubmit={handleSearchSubmit}>
-        <label htmlFor="city">Enter city name:</label>
+      <h1 className='mb-4 text-3xl'>Weather App</h1>
+      <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2 mb-2">
         <input
           type="text"
           id="city"
@@ -60,16 +59,18 @@ function App() {
           value={city}
           onChange={handleSearchChange}
           placeholder="Search for a city..."
+          className="w-[600px] rounded-md p-2 border border-gray-300 text-sm"
         />
-        <button type="submit">Search</button>
+        <button type="submit" className="p-2 text-white bg-blue-500 rounded-md">Search</button>
       </form>
 
       {searchResults && (
-        <ul>
+        <ul className="flex flex-col space-y-2 mb-4">
           {Object.values(searchResults).map((cityObject) => (
-            <li key={`${cityObject.name}-${cityObject.country}`} style={{backgroundColor: 'bisque'}}>
-              {cityObject.name}, {cityObject.country}
-              <button style={{ marginLeft: '10px' }} onClick={() => handleCitySelect(cityObject)}>
+            <li key={`${cityObject.name}-${cityObject.country}`}
+              className="flex items-center border rounded p-2">
+              <span className="flex-1">{cityObject.name}, {cityObject.country}</span>
+              <button className="" onClick={() => handleCitySelect(cityObject)}>
                 Select
               </button>
             </li>

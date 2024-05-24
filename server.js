@@ -1,6 +1,5 @@
 const express = require('express');
 const axios = require('axios');
-const request = require('request'); // Optional for map tiles
 require('dotenv').config();
 
 const app = express();
@@ -12,31 +11,57 @@ const apiGeoUrl = process.env.OPENWEATHERMAP_GEO_URL;
 const cache = require('memory-cache');
 const path = require('path');
 
+/**
+ * This endpoint is used to fetch weather data for a given city.
+ * It first checks if the data is already in the cache.
+ * If it is, it sends the cached data.
+ * If not, it fetches the data from the API, caches it for 10 minutes, and sends it.
+ */
 app.get('/weather/:city', async (req, res) => {
     try {
         const city = req.params.city;
-        const weatherResponse = await axios.get(`${apiGeoUrl}?q=${city}&limit=5&appid=${apiKey}`);
-        const cities = {};
-        weatherResponse.data.forEach(city => {
-            cities[city.country] = city;
-        });
-        res.json(cities);
+        const cacheKey = city;
+        const cachedData = cache.get(cacheKey);
+
+        if (cachedData) {
+            res.json(cachedData);
+        } else {
+            const weatherResponse = await axios.get(`${apiGeoUrl}?q=${city}&limit=5&appid=${apiKey}`);
+            const cities = {};
+            weatherResponse.data.forEach(city => {
+                cities[city.country] = city;
+            });
+            cache.put(cacheKey, cities, 1000 * 60 * 10); // cache for 10 minutes
+            res.json(cities);
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching weather data');
     }
 });
 
+
+/**
+ * This endpoint is used to fetch weather data for a given set of coordinates.
+ *
+ * It first checks if the data is already in the cache. If it is, it sends the
+ * cached data. If not, it fetches the data from the API, caches it for 10
+ * minutes, and sends it.
+ */
 app.get('/weather/coordinates/:lat,:lon', async (req, res) => {
     try {
         const { lat, lon } = req.params;
         const cacheKey = `${lat},${lon}`;
         let weatherData = cache.get(cacheKey);
+        if (weatherData) {
+            console.log('Fetching from cache');
+        } else {
             console.log('Fetching from API');
             const weatherResponse = await axios.get(`${apiUrl}?lat=${lat}&lon=${lon}&appid=${apiKey}`);
             weatherData = weatherResponse.data;
-            cache.put(cacheKey, weatherData, 1000 * 60 * 60); // 1 hour
-            res.json(weatherData);
+            cache.put(cacheKey, weatherData, 1000 * 60 * 10); // 10 minutes
+        }
+        res.json(weatherData);
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching weather data');
@@ -50,6 +75,7 @@ if (process.env.NODE_ENV === 'production') {
     });
 } else {
     console.log('Running in development mode');
+
     // Serve development server during development
     const { createProxyMiddleware } = require('http-proxy-middleware');
     const proxyMiddleware = createProxyMiddleware({
@@ -59,7 +85,8 @@ if (process.env.NODE_ENV === 'production') {
     app.use('/api', proxyMiddleware);
 }
 
-const port = process.env.PORT || 5000; // Use environment variable or default port
+// Use environment variable or default port
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
