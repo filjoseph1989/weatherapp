@@ -1,7 +1,6 @@
 import './App.css';
 import Weather from './components/Weather';
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 
 function App() {
   const [city, setCity] = useState(''); // City entered by user
@@ -31,22 +30,11 @@ function App() {
   };
 
   const handleCitySelect = (cityObject) => {
+    console.log(cityObject);
     setSelectedCity(cityObject);
     setCity(''); // Clear the search input after selection
     setSearchResults([]); // Clear search results after selection
   };
-
-  const [selectedLat, setSelectedLat] = useState(null);
-  const [selectedLon, setSelectedLon] = useState(null);
-
-  useEffect(() => {
-    // Fetch weather data only when selectedCity changes
-    if (selectedCity) {
-      const { lat, lon } = selectedCity;
-      setSelectedLat(lat);
-      setSelectedLon(lon);
-    }
-  }, [selectedCity]);
 
   return (
     <div className="App">
@@ -80,8 +68,7 @@ function App() {
 
       {selectedCity && (
         <Weather
-          lat={selectedLat}
-          lon={selectedLon} />
+          selectedCity={selectedCity} />
       )}
     </div>
   );
