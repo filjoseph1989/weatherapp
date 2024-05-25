@@ -51,7 +51,7 @@ const Weather = ({ selectedCity }) => {
                 <div className="weather-container">
                     <div style={{ position: 'relative' }}>
                         <i className="weather-icon" data-feather="10" style={{
-                            backgroundImage: `url(https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png)`,
+                            backgroundImage: `url(${endpoints.OPENWEATHERMAP_ICON_BASE_URL}/${weatherData.weather[0].icon}@2x.png)`,
                             backgroundSize: 'contain',
                             backgroundRepeat: 'no-repeat',
                             display: 'block',
@@ -86,41 +86,48 @@ const Weather = ({ selectedCity }) => {
                 </div>
                 <div className="week-container">
                     <ul className="week-list">
-                        {weatherData.weather.map((day, index) => (
-                            <li key={index} className={index === 0 ? 'active' : ''}>
-                                <i className="weather-icon" data-feather={`${weatherData.weather[0].icon.slice(0, 2)}n`} style={{
-                                    backgroundImage: `url(https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png)`,
-                                    backgroundSize: 'contain',
-                                    backgroundRepeat: 'no-repeat',
-                                    display: 'block',
-                                    width: '50px',
-                                    height: '50px',
-                                    margin: '0 auto',
-                                }}></i>
-                                <span className="day-name">
-                                    {new Date(weatherData.dt * 1000 + index * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { weekday: 'short' })}
-                                </span>
-                                <span className="day-temp">{Math.round(weatherData.main.temp - 273.15)}°C</span>
-                            </li>
-                        ))}
-                        <li>
-                            <WeatherCard
-                                weatherData={weatherData}
-                                dayName="Sat"
-                                dayTemp={Math.round(weatherData.main.temp - 273.15)} />
-                        </li>
-                        <li>
-                            <WeatherCard
-                                weatherData={weatherData}
-                                dayName="Sun"
-                                dayTemp={Math.round(weatherData.main.temp - 273.15)} />
-                        </li>
-                        <li>
-                            <WeatherCard
-                                weatherData={weatherData}
-                                dayName="Mon"
-                                dayTemp={Math.round(weatherData.main.temp - 273.15)} />
-                        </li>
+                        {weatherData.weather.map((day, index) => {
+                            const dayName = new Date(weatherData.dt * 1000 + index * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { weekday: 'short' });
+                            let weekDays = [];
+                            ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach((day) => {
+                                if (day === dayName) {
+                                    weekDays.push(
+                                        <li key={index} className="active">
+                                            <i className="weather-icon" data-feather={`${weatherData.weather[0].icon.slice(0, 2)}n`} style={{
+                                                backgroundImage: `url(${endpoints.OPENWEATHERMAP_ICON_BASE_URL}/${weatherData.weather[0].icon}@2x.png)`,
+                                                backgroundSize: 'contain',
+                                                backgroundRepeat: 'no-repeat',
+                                                display: 'block',
+                                                width: '50px',
+                                                height: '50px',
+                                                margin: '0 auto',
+                                            }}></i>
+                                            <span className="day-name">{day}</span>
+                                            <span className="day-temp">{Math.round(weatherData.main.temp - 273.15)}°C</span>
+                                        </li>
+                                    );
+                                } else {
+                                    weekDays.push(
+                                        <li key={index}>
+                                            <i className="weather-icon" data-feather={`${weatherData.weather[0].icon.slice(0, 2)}n`} style={{
+                                                backgroundImage: `url(${endpoints.OPENWEATHERMAP_ICON_BASE_URL}/${weatherData.weather[0].icon}@2x.png)`,
+                                                backgroundSize: 'contain',
+                                                backgroundRepeat: 'no-repeat',
+                                                display: 'block',
+                                                width: '50px',
+                                                height: '50px',
+                                                margin: '0 auto',
+                                            }}></i>
+                                            <span className="day-name">{day}</span>
+                                            {/* Todo: Problem: Don't have any data yet so, I make the same as the other */}
+                                            <span className="day-temp">{Math.round(weatherData.main.temp - 273.15)}°C</span>
+                                        </li>
+                                    );
+                                }
+                            });
+
+                            return weekDays;
+                        })}
                     </ul>
                 </div>
                 <div className="location-container">
