@@ -92,35 +92,20 @@ const Weather = ({ selectedCity }) => {
                             ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach((day) => {
                                 if (day === dayName) {
                                     weekDays.push(
-                                        <li key={index} className="active">
-                                            <i className="weather-icon" data-feather={`${weatherData.weather[0].icon.slice(0, 2)}n`} style={{
-                                                backgroundImage: `url(${endpoints.OPENWEATHERMAP_ICON_BASE_URL}/${weatherData.weather[0].icon}@2x.png)`,
-                                                backgroundSize: 'contain',
-                                                backgroundRepeat: 'no-repeat',
-                                                display: 'block',
-                                                width: '50px',
-                                                height: '50px',
-                                                margin: '0 auto',
-                                            }}></i>
-                                            <span className="day-name">{day}</span>
-                                            <span className="day-temp">{Math.round(weatherData.main.temp - 273.15)}°C</span>
+                                        <li key={day} className="active">
+                                            <WeatherCard
+                                                weatherData={weatherData}
+                                                dayName={day}
+                                                dayTemp={Math.round(weatherData.main.temp - 273.15)} />
                                         </li>
                                     );
                                 } else {
                                     weekDays.push(
-                                        <li key={index}>
-                                            <i className="weather-icon" data-feather={`${weatherData.weather[0].icon.slice(0, 2)}n`} style={{
-                                                backgroundImage: `url(${endpoints.OPENWEATHERMAP_ICON_BASE_URL}/${weatherData.weather[0].icon}@2x.png)`,
-                                                backgroundSize: 'contain',
-                                                backgroundRepeat: 'no-repeat',
-                                                display: 'block',
-                                                width: '50px',
-                                                height: '50px',
-                                                margin: '0 auto',
-                                            }}></i>
-                                            <span className="day-name">{day}</span>
-                                            {/* Todo: Problem: Don't have any data yet so, I make the same as the other */}
-                                            <span className="day-temp">{Math.round(weatherData.main.temp - 273.15)}°C</span>
+                                        <li key={day}>
+                                            <WeatherCard
+                                                weatherData={weatherData}
+                                                dayName={day}
+                                                dayTemp={Math.round(weatherData.main.temp - 273.15)} />
                                         </li>
                                     );
                                 }
