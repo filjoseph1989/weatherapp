@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import WeatherCard from './WeatherCard';
+import { endpoints } from '../config/endpoints';
 
-const Weather = ({ lat, lon }) => {
+const Weather = ({ selectedCity }) => {
     const [weatherData, setWeatherData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchWeatherData = async () => {
+        const fetchWeatherData = async (lat, lon) => {
             try {
-                const response = await axios.get(`api/weather/coordinates/${lat},${lon}`);
+                const response = await axios.get(`${endpoints.API_WEATHER_COORDINATES}/${lat},${lon}`);
                 setWeatherData(response.data);
             } catch (error) {
                 setError('Error fetching weather data');
@@ -19,10 +20,10 @@ const Weather = ({ lat, lon }) => {
             }
         };
 
-        if (lat && lon) {
-            fetchWeatherData();
+        if (selectedCity) {
+            fetchWeatherData(selectedCity.lat, selectedCity.lon);
         }
-    }, [lat, lon]);
+    }, [selectedCity]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
