@@ -2,10 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
-const weatherController = require('./weatherController');
+const WeatherController = require('./weatherController');
 
 // Use environment variable or default port
 const port = process.env.PORT || 5000;
+
+// Instantiate an object
+const weatherController = new WeatherController();
 
 // Routes
 app.get('/weather/:city', weatherController.getWeatherData);

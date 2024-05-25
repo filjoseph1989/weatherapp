@@ -3,10 +3,10 @@ const cache = require('memory-cache');
 
 class WeatherController {
     constructor() {
-        this.apiGeoUrl = process.env.OPENWEATHERMAP_GEO_URL;
+        this.apiGeoUrl = process.env.OPENWEATHERMAP_API_GEO_URL;
         this.apiUrl = process.env.OPENWEATHERMAP_API_URL;
         this.apiKey = process.env.OPENWEATHERMAP_API_KEY;
-        this.limit = 5;
+        this.limit = 10;
     }
 
     /**
@@ -16,7 +16,7 @@ class WeatherController {
      * @param {Object} res - The response object.
      * @return {Promise<void>} Resolves when the data is retrieved and sent.
      */
-    async getWeatherData(req, res) {
+    getWeatherData = async (req, res) => {
         const city = req.params.city;
         const cacheKey = city;
         const cachedData = cache.get(cacheKey);
@@ -39,7 +39,7 @@ class WeatherController {
         }
     }
 
-    async getWeatherDataByCoordinates(req, res) {
+    getWeatherDataByCoordinates = async (req, res) => {
         const { lat, lon } = req.params;
         const cacheKey = `${lat},${lon}`;
         let weatherData = cache.get(cacheKey);
