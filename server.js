@@ -6,6 +6,7 @@ const app = express();
 const apiKey = process.env.OPENWEATHERMAP_API_KEY;
 const apiUrl = process.env.OPENWEATHERMAP_API_URL;
 const apiGeoUrl = process.env.OPENWEATHERMAP_GEO_URL;
+const limit = 5;
 
 // API endpoint to fetch weather data based on coordinates
 const cache = require('memory-cache');
@@ -26,7 +27,7 @@ app.get('/weather/:city', async (req, res) => {
         if (cachedData) {
             res.json(cachedData);
         } else {
-            const weatherResponse = await axios.get(`${apiGeoUrl}?q=${city}&limit=5&appid=${apiKey}`);
+            const weatherResponse = await axios.get(`${apiGeoUrl}?q=${city}&limit=${limit}&appid=${apiKey}`);
             const cities = {};
             weatherResponse.data.forEach(city => {
                 cities[city.country] = city;
