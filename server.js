@@ -17,6 +17,17 @@ const cityController = new CityController(MemoryCacheService);
 app.get('/weather/:city', cityController.getCityWeather);
 app.get('/weather/coordinates/:lat,:lon', weatherController.getWeatherDataByCoordinates);
 
+// New route to return value of env variables
+app.get('/env/:key', (req, res) => {
+    const key = req.params.key;
+    const value = process.env[key];
+    if (value === undefined) {
+        res.status(404).send(`No value found for key ${key}`);
+    } else {
+        res.json({'key':value});
+    }
+});
+
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
     app.get('*', (req, res) => {
