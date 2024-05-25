@@ -1,16 +1,18 @@
 import React, { useEffect, useState} from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { endpoints } from '../config/endpoints';
 
 const Map = () => {
     const [clickedLocation, setClickedLocation] = useState(null);
     const [key, setKey] = useState(localStorage.getItem('mapKey'));
+    const [center, setCenter] = useState({ lat: 7.0608, lng: 125.5805 }); // Davao coordinate
 
     useEffect(() => {
         const cachedKey = localStorage.getItem('mapKey');
         const isKeyExpired = localStorage.getItem('mapKeyExpiresAt');
 
         if (!cachedKey || (isKeyExpired && new Date(isKeyExpired) < new Date())) {
-            fetch(`/api/env/MAP_API_KEY`)
+            fetch(endpoints.API_MAP_API_KEY)
                 .then(response => response.json())
                 .then(data => {
                     setKey(data.key);
@@ -40,7 +42,7 @@ const Map = () => {
                 <GoogleMap
                     mapContainerStyle={{ width: '100%', height: '400px' }}
                     zoom={8}
-                    center={{ lat: 7.0608, lng: 125.5805 }} // Davao City coordinates
+                    center={center}
                     onClick={handleMapClick} >
                     {clickedLocation && (
                         <Marker position={clickedLocation} />
