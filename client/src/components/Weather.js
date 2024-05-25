@@ -10,7 +10,7 @@ const Weather = ({ lat, lon }) => {
     useEffect(() => {
         const fetchWeatherData = async () => {
             try {
-                const response = await axios.get(`/weather/coordinates/${lat},${lon}`);
+                const response = await axios.get(`api/weather/coordinates/${lat},${lon}`);
                 setWeatherData(response.data);
             } catch (error) {
                 setError('Error fetching weather data');

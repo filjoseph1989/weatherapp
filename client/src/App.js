@@ -21,7 +21,7 @@ function App() {
     }
 
     try {
-      const response = await fetch( `/weather/${city}` );
+      const response = await fetch( `/api/weather/${city}` );
       const data = await response.json();
       setSearchResults(data);
     } catch (error) {
