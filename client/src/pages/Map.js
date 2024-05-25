@@ -3,15 +3,26 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const Map = () => {
     const [clickedLocation, setClickedLocation] = useState(null);
-    const [key, setKey] = useState(null);
+    const [key, setKey] = useState(localStorage.getItem('mapKey'));
 
     useEffect(() => {
-        fetch(`/api/env/MAP_API_KEY`)
-            .then(response => response.json())
-            .then(data => {
-                setKey(data.key);
-            })
-            .catch(error => console.error(error));
+        const cachedKey = localStorage.getItem('mapKey');
+        const isKeyExpired = localStorage.getItem('mapKeyExpiresAt');
+
+        if (!cachedKey || (isKeyExpired && new Date(isKeyExpired) < new Date())) {
+            fetch(`/api/env/MAP_API_KEY`)
+                .then(response => response.json())
+                .then(data => {
+                    setKey(data.key);
+                    localStorage.setItem('mapKey', data.key);
+                    const now = new Date();
+                    const expiration = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours
+                    localStorage.setItem('mapKeyExpiresAt', expiration.toISOString());
+                })
+                .catch(error => console.error(error));
+        } else {
+            setKey(cachedKey);
+        }
     }, []);
 
     const handleMapClick = (e) => {
