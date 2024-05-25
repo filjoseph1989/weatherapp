@@ -1,6 +1,7 @@
 import './App.css';
 import Weather from './components/Weather';
 import React, { useState } from 'react';
+import { endpoints } from './config/endpoints';
 
 function App() {
   const [city, setCity] = useState(''); // City entered by user
@@ -20,7 +21,7 @@ function App() {
     }
 
     try {
-      const response = await fetch( `/api/weather/${city}` );
+      const response = await fetch(`${endpoints.API_WEATHER_BY_CITY}/${city}`);
       const data = await response.json();
       setSearchResults(data);
     } catch (error) {

@@ -1,61 +1,44 @@
 const axios = require('axios');
-const cache = require('memory-cache');
 
 class WeatherController {
-    constructor() {
-        this.apiGeoUrl = process.env.OPENWEATHERMAP_API_GEO_URL;
+    /**
+     * Constructor for the WeatherController class.
+     * @param {MemoryCacheService} memoryCacheService - The memory cache service instance.
+     */
+    constructor(MemoryCacheService) {
+        this.memoryCacheService = MemoryCacheService;
         this.apiUrl = process.env.OPENWEATHERMAP_API_URL;
         this.apiKey = process.env.OPENWEATHERMAP_API_KEY;
         this.limit = 10;
     }
 
     /**
-     * Asynchronously gets weather data for a given city.
+     * Retrieves weather data by coordinates.
      *
      * @param {Object} req - The request object.
      * @param {Object} res - The response object.
-     * @return {Promise<void>} Resolves when the data is retrieved and sent.
+     * @return {Promise} A promise that resolves to the weather data.
      */
-    getWeatherData = async (req, res) => {
-        const city = req.params.city;
-        const cacheKey = city;
-        const cachedData = cache.get(cacheKey);
-
-        if (cachedData) {
-            res.json(cachedData);
-        } else {
-            try {
-                const weatherResponse = await axios.get(`${this.apiGeoUrl}?q=${city}&limit=${this.limit}&appid=${this.apiKey}`);
-                const cities = {};
-                weatherResponse.data.forEach((city) => {
-                    cities[city.country] = city;
-                });
-                cache.put(cacheKey, cities, 1000 * 60 * 10); // cache for 10 minutes
-                res.json(cities);
-            } catch (error) {
-                console.error(error);
-                res.status(500).send('Error fetching weather data');
-            }
-        }
-    }
-
     getWeatherDataByCoordinates = async (req, res) => {
         const { lat, lon } = req.params;
         const cacheKey = `${lat},${lon}`;
-        let weatherData = cache.get(cacheKey);
+        let weatherData = this.memoryCacheService.get(cacheKey);
 
         if (weatherData) {
             console.log('Fetching from cache');
-        } else {
-            try {
-                const weatherResponse = await axios.get(`${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`);
-                weatherData = weatherResponse.data;
-                cache.put(cacheKey, weatherData, 1000 * 60 * 10); // cache for 10 minutes
-            } catch (error) {
-                console.error(error);
-                res.status(500).send('Error fetching weather data');
-                return;
-            }
+            res.json(weatherData);
+        }
+
+        try {
+            console.log('Fetching from API');
+            const url = `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
+            const weatherResponse = await axios.get(url);
+            weatherData = weatherResponse.data;
+            this.memoryCacheService.put(cacheKey, weatherData, 1000 * 60 * 10); // cache for 10 minutes
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error fetching weather data');
+            return;
         }
 
         res.json(weatherData);
@@ -63,4 +46,3 @@ class WeatherController {
 }
 
 module.exports = WeatherController;
-
