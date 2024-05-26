@@ -1,12 +1,13 @@
 import React, { useEffect, useState} from 'react';
 import { endpoints } from '../config/endpoints';
 import { Loader } from "@googlemaps/js-api-loader"
+import { Navigate } from 'react-router-dom';
 
 const Map = () => {
     const [clickedLocation, setClickedLocation] = useState(null);
     const [key, setKey] = useState(localStorage.getItem('mapKey'));
-    const [center, setCenter] = useState({ lat: 7.0608, lng: 125.5805 }); // Davao coordinate
     const [loader, setLoader] = useState(null);
+    const [uri, setUri] = useState(null);
 
     useEffect(() => {
         const cachedKey = localStorage.getItem('mapKey');
@@ -44,7 +45,7 @@ const Map = () => {
             loader.load().then(async (google) => {
                 const { Map } = await google.maps.importLibrary("maps");
                 const map = new Map(document.getElementById("map"), {
-                    center: center,
+                    center: { lat: 7.0608, lng: 125.5805 }, // Davao coordinate
                     zoom: 8,
                 });
                 map.addListener("click", (e) => {
@@ -54,15 +55,20 @@ const Map = () => {
         }
     }, [loader]);
 
+    useEffect(() => {
+        if (clickedLocation) {
+            setUri(`/weather/${clickedLocation.lat().toFixed(4)}/${clickedLocation.lng().toFixed(4)}`)
+        }
+    }, [clickedLocation]);
+
+    if (uri) {
+        return <Navigate to={uri} replace={true} />
+    }
+
     return (
         <div className='w-[800px]'>
             <h1>Map</h1>
             <div id="map" className='h-[500px]'></div>
-            {clickedLocation && (
-                <div>
-                    Clicked location: Latitude: {clickedLocation.lat().toFixed(4)}, Longitude: {clickedLocation.lng().toFixed(4)}
-                </div>
-            )}
         </div>
     );
 }

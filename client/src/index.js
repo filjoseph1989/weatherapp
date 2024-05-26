@@ -8,11 +8,17 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Map from './pages/Map';
+import AppUpdate, { mapLoader } from './AppUpdate';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: "/weather/:lat/:lon",
+    element: <AppUpdate />,
+    loader: mapLoader
   },
   {
     path: "/map",

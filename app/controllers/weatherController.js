@@ -26,14 +26,14 @@ class WeatherController {
 
         if (weatherData) {
             console.log('Fetching from cache');
-            res.json(weatherData);
+            return res.json(weatherData);
         }
 
         try {
             console.log('Fetching from API');
             const url = `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
-            const weatherResponse = await axios.get(url);
-            weatherData = weatherResponse.data;
+            const response = await axios.get(url);
+            weatherData = response.data;
             this.memoryCacheService.put(cacheKey, weatherData, 1000 * 60 * 10); // cache for 10 minutes
         } catch (error) {
             console.error(error);

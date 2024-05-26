@@ -1,9 +1,10 @@
-const OPENWEATHERMAP_ICON_BASE_URL = process.env.REACT_APP_OPENWEATHERMAP_ICON_BASE_URL || '';
+import { endpoints } from "../config/endpoints";
+
 const WeatherCard = ({ weatherData, dayName, dayTemp }) => {
     return (
         <div>
             <i className="weather-icon" data-feather={`${weatherData.weather[0].icon.slice(0, 2)}n`} style={{
-                backgroundImage: `url(${OPENWEATHERMAP_ICON_BASE_URL}${weatherData.weather[0].icon}@2x.png)`,
+                backgroundImage: `url(${endpoints.OPENWEATHERMAP_ICON_BASE_URL}/${weatherData.weather[0].icon}@2x.png)`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 display: 'block',
