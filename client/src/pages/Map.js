@@ -1,11 +1,12 @@
 import React, { useEffect, useState} from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { endpoints } from '../config/endpoints';
+import { Loader } from "@googlemaps/js-api-loader"
 
 const Map = () => {
     const [clickedLocation, setClickedLocation] = useState(null);
     const [key, setKey] = useState(localStorage.getItem('mapKey'));
     const [center, setCenter] = useState({ lat: 7.0608, lng: 125.5805 }); // Davao coordinate
+    const [loader, setLoader] = useState(null);
 
     useEffect(() => {
         const cachedKey = localStorage.getItem('mapKey');
@@ -27,28 +28,36 @@ const Map = () => {
         }
     }, []);
 
-    const handleMapClick = (e) => {
-        setClickedLocation(e.latLng);
-    };
+    useEffect(() => {
+        if (key) { // Check if key is available
+            let loaderLocal = new Loader({
+                apiKey: key,
+                version: "weekly",
+                libraries: ["places"]
+            });
+            setLoader(loaderLocal);
+        }
+    }, [key]);
+
+    useEffect(() => {
+        if (loader) {
+            loader.load().then(async (google) => {
+                const { Map } = await google.maps.importLibrary("maps");
+                const map = new Map(document.getElementById("map"), {
+                    center: center,
+                    zoom: 8,
+                });
+                map.addListener("click", (e) => {
+                    setClickedLocation(e.latLng);
+                });
+            });
+        }
+    }, [loader]);
 
     return (
-        <div className='w-[500px]'>
+        <div className='w-[800px]'>
             <h1>Map</h1>
-            {key && (<LoadScript
-                googleMapsApiKey={key}
-                libraries={['places']} // Optional libraries for additional features
-                loading="lazy" // Add loading="lazy" for asynchronous loading
-                >
-                <GoogleMap
-                    mapContainerStyle={{ width: '100%', height: '400px' }}
-                    zoom={8}
-                    center={center}
-                    onClick={handleMapClick} >
-                    {clickedLocation && (
-                        <Marker position={clickedLocation} />
-                    )}
-                </GoogleMap>
-            </LoadScript>)}
+            <div id="map" className='h-[500px]'></div>
             {clickedLocation && (
                 <div>
                     Clicked location: Latitude: {clickedLocation.lat().toFixed(4)}, Longitude: {clickedLocation.lng().toFixed(4)}
