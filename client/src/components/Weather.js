@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import WeatherCard from './WeatherCard';
 import { endpoints } from '../config/endpoints';
+import { Navigate } from 'react-router-dom';
 
 const Weather = ({ selectedCity }) => {
     const [weatherData, setWeatherData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [toMap, setToMap] = useState(false);
 
     useEffect(() => {
         const fetchWeatherData = async (lat, lon) => {
@@ -27,6 +29,10 @@ const Weather = ({ selectedCity }) => {
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
+
+    if (toMap) {
+        return <Navigate to={'/map'} replace={true} />
+    }
 
     return (
         <div className="container">
@@ -116,7 +122,7 @@ const Weather = ({ selectedCity }) => {
                     </ul>
                 </div>
                 <div className="location-container">
-                    <button className="location-button">
+                    <button className="location-button" onClick={() => setToMap(true)}>
                         <i data-feather="map-pin"></i>
                         <span>Pick location</span>
                     </button>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import { endpoints } from '../config/endpoints';
 import { Loader } from "@googlemaps/js-api-loader"
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 const Map = () => {
     const [clickedLocation, setClickedLocation] = useState(null);
@@ -67,7 +67,10 @@ const Map = () => {
 
     return (
         <div className='w-[800px]'>
-            <h1>Map</h1>
+            <h1 className='mb-4 text-3xl'>Weather App</h1>
+            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-1'>
+                <Link to='/' className='text-white'>Home</Link>
+            </button>
             <div id="map" className='h-[500px]'></div>
         </div>
     );
