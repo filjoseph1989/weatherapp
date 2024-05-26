@@ -5,6 +5,7 @@ const path = require('path');
 
 // Controllers
 const WeatherController = require('./app/controllers/weatherController');
+const ForecastController = require('./app/controllers/forecastController');
 const CityController = require('./app/controllers/cityController');
 const EnvironmentController = require('./app/controllers/environmentController');
 
@@ -16,12 +17,14 @@ const port = process.env.PORT || 5000;
 
 // Instantiate an objects
 const weatherController = new WeatherController(MemoryCacheService);
+const forecastController = new ForecastController(MemoryCacheService);
 const cityController = new CityController(MemoryCacheService);
 const envController = new EnvironmentController();
 
 // Routes
 app.get('/weather/:city', cityController.getCityWeather);
 app.get('/weather/coordinates/:lat,:lon', weatherController.getWeatherDataByCoordinates);
+app.get('/forecast/coordinates/:lat,:lon', forecastController.getDailyWeatherForecastByCoordinates);
 app.get('/env/:key', envController.getEnvValue);
 
 // Development state

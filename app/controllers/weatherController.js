@@ -9,7 +9,6 @@ class WeatherController {
         this.memoryCacheService = MemoryCacheService;
         this.apiUrl = process.env.OPENWEATHERMAP_API_URL;
         this.apiKey = process.env.OPENWEATHERMAP_API_KEY;
-        this.limit = 10;
     }
 
     /**
@@ -31,7 +30,7 @@ class WeatherController {
 
         try {
             console.log('Fetching from API');
-            const url = `${this.apiUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
+            const url = `${this.apiUrl}/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}`;
             const response = await axios.get(url);
             weatherData = response.data;
             this.memoryCacheService.put(cacheKey, weatherData, 1000 * 60 * 10); // cache for 10 minutes
