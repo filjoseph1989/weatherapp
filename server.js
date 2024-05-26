@@ -2,8 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
-const WeatherController = require('./weatherController');
+
+// Controllers
+const WeatherController = require('./app/controllers/weatherController');
 const CityController = require('./app/controllers/cityController');
+const EnvironmentController = require('./app/controllers/environmentController');
+
+// Services
 const MemoryCacheService = require('./app/cache/memoryCache');
 
 // Use environment variable or default port
@@ -12,22 +17,14 @@ const port = process.env.PORT || 5000;
 // Instantiate an objects
 const weatherController = new WeatherController(MemoryCacheService);
 const cityController = new CityController(MemoryCacheService);
+const envController = new EnvironmentController();
 
 // Routes
 app.get('/weather/:city', cityController.getCityWeather);
 app.get('/weather/coordinates/:lat,:lon', weatherController.getWeatherDataByCoordinates);
+app.get('/env/:key', envController.getEnvValue);
 
-// New route to return value of env variables
-app.get('/env/:key', (req, res) => {
-    const key = req.params.key;
-    const value = process.env[key];
-    if (value === undefined) {
-        res.status(404).send(`No value found for key ${key}`);
-    } else {
-        res.json({'key':value});
-    }
-});
-
+// Development state
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
     app.get('*', (req, res) => {
