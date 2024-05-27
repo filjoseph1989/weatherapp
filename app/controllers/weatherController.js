@@ -35,7 +35,6 @@ class WeatherController {
             weatherData = response.data;
             this.memoryCacheService.put(cacheKey, weatherData, 1000 * 60 * 10); // cache for 10 minutes
         } catch (error) {
-            console.error(error);
             res.status(500).send('Error fetching weather data');
             return;
         }
