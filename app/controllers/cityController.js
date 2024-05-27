@@ -23,16 +23,16 @@ class CityController {
         const cachedData = this.cacheService.get(cacheKey);
 
         if (cachedData) {
-            res.json(cachedData);
-        } else {
-            try {
-                const response = await this.fetchWeatherData(city);
-                const cities = this.transformWeatherData(response.data);
-                this.cacheService.put(cacheKey, cities, 1000 * 60 * 10); // cache for 10 minutes
-                res.json(cachedData);
-            } catch (error) {
-                res.status(500).send('Error fetching weather data');
-            }
+            return res.json(cachedData);
+        }
+
+        try {
+            const response = await this.fetchWeatherData(city);
+            const cities = this.transformWeatherData(response.data);
+            this.cacheService.put(cacheKey, cities, 1000 * 60 * 10); // cache for 10 minutes
+            return res.json(cachedData);
+        } catch (error) {
+            return res.status(500).send('Error fetching weather data');
         }
     }
 
