@@ -9,6 +9,8 @@ A weather app that uses the OpenWeatherMap API to get weather data.
 - [Usage](#usage)
 - [APIs](#apis)
 - [Technologies Used](#technologies-used)
+- [Testing](#testing)
+- [Directory Structure](#directory-structure)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -20,11 +22,11 @@ This app allows users to search for weather data of a specific city. The user ca
 
 To install the app, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/weather-app.git`
-2. Change the working directory to the cloned repository: `cd weatherapp`
-3. Install the dependencies: `npm install`
-2. Change the working directory to the client: `cd client`
-3. Install the dependencies: `npm install`
+1. Clone the repository: `git clone https://github.com/your-username/weatherapp.git`
+1. Change the working directory to the cloned repository: `cd weatherapp`
+1. Install the dependencies: `npm install`
+1. Change the working directory to the client: `cd client`
+1. Install the dependencies: `npm install`
 
 ## Usage
 
@@ -71,4 +73,4 @@ If you want to contribute to the project, please follow these guidelines:
 
 ## License
 
-This project is not licensed yet under the MIT License. It is possible that licensing might be applied in the future. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
