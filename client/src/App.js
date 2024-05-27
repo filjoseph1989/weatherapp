@@ -98,7 +98,7 @@ function App() {
         <div className='mb-4'>
           <SearchForm
             onSearchSubmit={handleSearchSubmit} />
-          <p className="mt-2 text-sm text-gray-500 text-yellow-600">
+          <p className="mt-2 text-sm text-yellow-600">
             <FontAwesomeIcon
               className='mr-2'
               icon={faInfoCircle}/>
