@@ -67,8 +67,7 @@ The structure of the directory is as follows:
 To deploy the app in production, follow these steps:
 
 1. Build the client code: `npm run build` in the `client` directory
-2. Build the server code: `npm run build` in the root directory of the project
-3. Start the app in production mode: `npm start` in the root directory of the project
+1. Start the app in production mode: `npm start` in the root directory of the project
 
 Note: Make sure to set the `NODE_ENV` environment variable to `production` in the production environment.
 
