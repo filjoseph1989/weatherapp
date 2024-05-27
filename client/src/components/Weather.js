@@ -11,6 +11,27 @@ const Weather = ({ selectedCity }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [weekdays, setWeekdays] = useState([]);
+    const [unsplashImageUrl, setUnsplashImageUrl] = useState(null);
+
+    useEffect(() => {
+        const cachedImageUrl = localStorage.getItem('unsplashImageUrl');
+        const isKeyExpired = localStorage.getItem('unsplashImageUrlExpiresAt');
+
+        if (!cachedImageUrl || (isKeyExpired && new Date(isKeyExpired) < new Date())) {
+            fetch(`${process.env.REACT_APP_API_URL}/${endpoints.API_UNSPLASH_IMAGE_URL}`)
+                .then(response => response.json())
+                .then(data => {
+                    setUnsplashImageUrl(data.key);
+                    localStorage.setItem('unsplashImageUrl', data.key);
+                    const now = new Date();
+                    const expiration = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours
+                    localStorage.setItem('unsplashImageUrlExpiresAt', expiration.toISOString());
+                })
+                .catch(error => console.error(error));
+        } else {
+            setUnsplashImageUrl(cachedImageUrl);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchWeatherData = async (lat, lon) => {
@@ -77,7 +98,7 @@ const Weather = ({ selectedCity }) => {
     return (
         <div className='md:grid md:grid-cols-2 sm:flex sm:flex-col'>
             <div className="relative h-[500px] bg-cover bg-center w-full overflow-hidden"
-                style={{ backgroundImage: `url('${process.env.UNSPLASH_IMAGE_URL}')` }}>
+                style={{ backgroundImage: `url('${unsplashImageUrl}')` }}>
                 <div className="w-full h-full bg-cover bg-center bg-gradient-to-br from-blue-400 via-blue-500 to-cyan-500 opacity-80"></div>
                 <div className="absolute top-3 w-full h-1/2 px-5 text-white">
                     <div className='flex flex-col h-1/2 items-left justify-center'>
