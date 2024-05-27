@@ -73,14 +73,12 @@ const Weather = ({ selectedCity }) => {
 
     return (
         <div className='md:grid md:grid-cols-2 sm:flex sm:flex-col'>
-            <div className="relative h-[500px] bg-cover bg-center w-full overflow-hidden transition-all duration-300 hover:scale-105 hover:rounded-3xl"
-                style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1559963110-71b394e7494d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80')"
-                }}>
+            <div className="relative h-[500px] bg-cover bg-center w-full overflow-hidden"
+                style={{ backgroundImage: `url('${process.env.UNSPLASH_IMAGE_URL}')` }}>
                 <div class="w-full h-full bg-cover bg-center bg-gradient-to-br from-blue-400 via-blue-500 to-cyan-500 opacity-80"></div>
                 <div className="absolute top-3 w-full h-1/2 px-5 text-white">
                     <div className='flex flex-col h-1/2 items-left justify-center'>
-                        <h2 className="date-dayname text-2xl font-bold text-4xl">
+                        <h2 className="date-dayname font-bold text-4xl">
                             {weatherData?.weather?.[0]?.main}
                         </h2>
                         <h4 className="date-day text-md mb-4">
