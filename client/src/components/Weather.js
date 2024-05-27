@@ -15,7 +15,8 @@ const Weather = ({ selectedCity }) => {
     useEffect(() => {
         const fetchWeatherData = async (lat, lon) => {
             try {
-                const response = await axios.get(`${endpoints.API_WEATHER_COORDINATES}/${lat},${lon}`);
+                const apiUrl = `${process.env.REACT_APP_API_URL}/${endpoints.API_WEATHER_COORDINATES}/${lat},${lon}`;
+                const response = await axios.get(apiUrl);
                 if (selectedCity.name) {
                     response.data.name = selectedCity.name;
                 }

@@ -1,7 +1,7 @@
 export const endpoints = {
-  API_WEATHER_COORDINATES: '/api/weather/coordinates',
-  API_FORECAST_COORDINATES: '/api/forecast/coordinates',
-  API_WEATHER_BY_CITY: '/weather',
+  API_WEATHER_COORDINATES: 'weather/coordinates',
+  API_FORECAST_COORDINATES: 'forecast/coordinates',
+  API_WEATHER_BY_CITY: 'weather',
   OPENWEATHERMAP_ICON_BASE_URL: 'https://openweathermap.org/img/wn',
-  API_MAP_API_KEY: '/api/env/MAP_API_KEY',
+  API_MAP_API_KEY: 'env/MAP_API_KEY',
 };
