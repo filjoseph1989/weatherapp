@@ -101,7 +101,7 @@ function App() {
           <p className="mt-2 text-sm text-yellow-600">
             <FontAwesomeIcon
               className='mr-2'
-              icon={faInfoCircle}/>
+              icon={faInfoCircle} />
             If no results are shown, please try clicking the submit button again.
           </p>
         </div>
@@ -124,19 +124,18 @@ function App() {
             <Weather selectedCity={selectedCity} />
           </div>
         </div>
-
-        <footer className="mt-4 border-t-2 border-gray-200 py-4 text-center text-sm text-gray-500">
-          <p>
-            Created by <span className="font-bold">Fil Elman</span>
-          </p>
-          <p className="text-xs">
-            This is a demo app for learning React and OpenWeatherMap API.
-            No data is stored or transmitted outside of the browser.
-          </p>
-        </footer>
       </div>
+      <footer className="mt-4 border-t-2 border-gray-200 py-4 text-center text-sm text-gray-500">
+        <p>
+          Created by <span className="font-bold">Fil Elman</span>
+        </p>
+        <p className="text-xs">
+          This is a demo app for learning React and OpenWeatherMap API.
+          No data is stored or transmitted outside of the browser.
+        </p>
+      </footer>
     </>
-  )
+  );
 }
 
 export default App;
