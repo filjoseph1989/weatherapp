@@ -70,7 +70,7 @@ To deploy the app in production, follow these steps:
 1. Build the client code: `npm run build` in the `client` directory
 1. Start the app in production mode: `npm rurn server` in the root directory of the project
 
-Note: Make sure to set the `NODE_ENV` environment variable to `production` in the production environment.
+Note: Make sure to set the `NODE_ENV` environment variable to `production` in the production environment, by setting it in the root directory of the `weatherapp` project.
 
 ## Contributing
 
