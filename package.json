@@ -1,15 +1,14 @@
 {
   "dependencies": {
+    "@babel/preset-react": "^7.24.6",
     "axios": "^1.7.2",
+    "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "http-proxy-middleware": "^3.0.0",
     "memory-cache": "^0.2.0",
-    "request": "^2.88.2",
-    "concurrently": "^8.2.2",
-    "@babel/preset-react": "^7.24.6",
-    "jest": "^29.7.0",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "request": "^2.88.2"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
@@ -18,5 +17,8 @@
     "client": "npm start --prefix client",
     "client_build": "npm run build --prefix client",
     "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
