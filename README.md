@@ -66,11 +66,10 @@ The structure of the directory is as follows:
 
 To deploy the app in production, follow these steps:
 
-1. Update the `.env` file in the `client` directory with the production API URL: `REACT_APP_API_URL=http://localhost:5000` (dont forget to remove something like http://localhost:5000 in REACT_APP_API_URL in development mode)
-1. Build the client code: `npm run build` in the `client` directory
-1. Start the app in production mode: `npm rurn server` in the root directory of the project
-
-Note: Make sure to set the `NODE_ENV` environment variable to `production` in the production environment, by setting it in the root directory of the `weatherapp` project.
+1. Make sure to set the `NODE_ENV` environment variable to `production` in the production environment, by setting it in the root directory of the `weatherapp` project.
+1. Make sure to set the `PORT` environment variable to `8080` in the production environment, by setting it in the root directory of the `weatherapp` project.
+1. Run `npm run prod` and it will build React.js then
+1. run at `localhost:5000`
 
 ## Contributing
 
