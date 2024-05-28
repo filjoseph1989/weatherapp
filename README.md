@@ -68,7 +68,7 @@ To deploy the app in production, follow these steps:
 
 1. Make sure to set the `NODE_ENV` environment variable to `production` in the production environment, by setting it in the root directory of the `weatherapp` project.
 1. Run `npm install && npm install --prefix client && npm run build --prefix client`
-1. Run `npm run server` and it will build React.js then
+1. Run `npm run server` to start the server, specifying the port if necessary. You can set the `PORT` environment variable to a specific value if you want to run the server on a different port than the default 5000.
 1. run at `localhost:5000`
 
 ## Contributing
