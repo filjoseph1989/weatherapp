@@ -6,7 +6,7 @@
     "http-proxy-middleware": "^3.0.0",
     "memory-cache": "^0.2.0",
     "request": "^2.88.2",
-    "concurrently": "^8.2.2",
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.24.6",
