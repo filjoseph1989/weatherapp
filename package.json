@@ -16,7 +16,7 @@
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "prod": "concurrently \"npm run client-build\" \"npm run server\"",
-    "prod-build": "\"npm run client-build\" \"npm run server\"",
+    "prod-build": "\"npm run build --prefix client\" \"npm run server\"",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "client-build": "npm run build --prefix client",
