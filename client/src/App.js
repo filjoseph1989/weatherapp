@@ -25,7 +25,8 @@ function App() {
     const isKeyExpired = localStorage.getItem('mapKeyExpiresAt');
 
     if (!cachedKey || (isKeyExpired && new Date(isKeyExpired) < new Date())) {
-      fetch(`${process.env.REACT_APP_API_URL}/${endpoints.API_MAP_API_KEY}`)
+      const url = `/${endpoints.API_MAP_API_KEY}`;
+      fetch(url)
         .then(response => response.json())
         .then(data => {
           setKey(data.key);
@@ -78,7 +79,7 @@ function App() {
     }
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/${endpoints.API_WEATHER_BY_CITY}/${city}`;
+      const url = `/${endpoints.API_WEATHER_BY_CITY}/${city}`;
       const response = await fetch(url);
       const data = await response.json();
       setSearchResults(data);

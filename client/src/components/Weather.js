@@ -18,7 +18,8 @@ const Weather = ({ selectedCity }) => {
         const isKeyExpired = localStorage.getItem('unsplashImageUrlExpiresAt');
 
         if (!cachedImageUrl || (isKeyExpired && new Date(isKeyExpired) < new Date())) {
-            fetch(`${process.env.REACT_APP_API_URL}/${endpoints.API_UNSPLASH_IMAGE_URL}`)
+            const apiUrl = `/${endpoints.API_UNSPLASH_IMAGE_URL}`;
+            fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
                     setUnsplashImageUrl(data.key);
@@ -36,7 +37,7 @@ const Weather = ({ selectedCity }) => {
     useEffect(() => {
         const fetchWeatherData = async (lat, lon) => {
             try {
-                const apiUrl = `${process.env.REACT_APP_API_URL}/${endpoints.API_WEATHER_COORDINATES}/${lat},${lon}`;
+                const apiUrl = `/${endpoints.API_WEATHER_COORDINATES}/${lat},${lon}`;
                 const response = await axios.get(apiUrl);
                 if (selectedCity.name) {
                     response.data.name = selectedCity.name;
